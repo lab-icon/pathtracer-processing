@@ -1,13 +1,37 @@
-void setup(){
-  fullScreen();  
+Snake snake;
+//Apple apple;
+
+static int initialX = 700;
+static int initialY = 500;
+
+boolean breaking = false;
+
+void setup() {
+  fullScreen();
   background(0);
+
+  reset();
+  mapper();
+
+  println(lines[0].get("x1"));
 }
 
-void draw(){
+void draw() {
   mapMonitor();
+
+  // apple.show();
+  // for (int i = 0; i < snake.tail.size(); i++) {
+  //   if (snake.tail.get(i).x == apple.x && snake.tail.get(i).y == apple.y) {
+  //     apple = new Apple();
+  //   }
+  // }
+
+  snake.show();
+  snake.update();
+  snake.step();
 }
 
-void mapMonitor(){
+void mapMonitor() {
   push();  
   noStroke();
   fill(255,209,0);
@@ -34,7 +58,6 @@ void mapMonitor(){
   int mh3 = round(360);
   rect(mx3,my3,mw3,mh3); 
   
-  fill(255,0,0);
   // INFERIOR DIREITO
   int mx4 = round(1047);
   int my4 = round(440);
@@ -56,4 +79,32 @@ void mapMonitor(){
   rect(mbx2,mby2,mbw2,mbh2); // borda de baixo
   
   pop();
+}
+
+ void keyPressed() {
+  if (keyCode == ENTER) {
+    snake.setStart(true);
+    if (snake.alive == false){
+      reset();
+    }
+  }
+
+  if (keyCode == UP) {
+    snake.setDir(0, -1);
+  } 
+  if (keyCode == DOWN) {
+    snake.setDir(0, 1);
+  }
+  if (keyCode == RIGHT) {
+    snake.setDir(1, 0);
+  }
+  if (keyCode == LEFT) {
+    snake.setDir(-1, 0);
+  }
+}
+
+void reset() {
+  snake = new Snake(initialX,initialY);
+  // apple = new Apple();
+  breaking = false;
 }

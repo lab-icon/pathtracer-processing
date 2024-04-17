@@ -1,0 +1,13 @@
+import java.util.HashMap;
+
+HashMap<String, Object>[] lines = new HashMap[16];
+
+void mapper() {
+  for (int i = 0; i < lines.length; i++) {
+    lines[i] = new HashMap<String, Object>();
+  }
+  
+  
+
+  
+}
