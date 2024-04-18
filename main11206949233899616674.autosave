@@ -23,9 +23,9 @@ void draw() {
     if (breaking) {
       break;
     }
-    
-    //Line specificLine = lines[i];
-    //println(specificLine);
+    String name = "line" + i;
+    Line specificLine = lines.get(name);
+    println(specificLine);
 
     // if (specificLine.crossedLine(snake.x, snake.y, snake.body[4].x, snake.body[4].y, specificLine)) {
     //   breaking = true;

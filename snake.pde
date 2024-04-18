@@ -1,11 +1,12 @@
 class Snake {
-  float x, y;
-  float speed = 2;
-  boolean alive = true;
-  boolean start = false;
-  ArrayList<PVector> body = new ArrayList<PVector>();
-  PVector head;
-  float xdir, ydir;
+  private float x, y;
+  private float speed = 2;
+  private boolean alive = true;
+  private boolean start = false;
+  private ArrayList<PVector> body = new ArrayList<PVector>();
+  private PVector head;
+  private float xdir, ydir;
+  private float radius = 60;
 
   Snake(float x, float y) {
     this.x = x;
@@ -28,20 +29,29 @@ class Snake {
     this.ydir = y;
   }
 
+  ArrayList<PVector> getBody() {
+    return this.body;
+  }
+
   void show() {
     pushMatrix();
     for(int i = 0; i < this.body.size(); i++) {
       // fill(colors[i], colors[i + 1], colors[i + 2]);
       fill(255);
-      ellipse(this.body.get(i).x, this.body.get(i).y, 60, 60);
+      
+      circle(this.body.get(i).x, this.body.get(i).y, this.radius);
     }
     fill(0);
     float eyeRadius = 10;
-    float eyeOffset = 20;
-    float eyeX1 = this.body.get(0).x + this.xdir * eyeOffset - this.ydir * eyeOffset;
-    float eyeY1 = this.body.get(0).y + this.ydir * eyeOffset + this.xdir * eyeOffset;
-    float eyeX2 = this.body.get(0).x + this.xdir * eyeOffset + this.ydir * eyeOffset;
-    float eyeY2 = this.body.get(0).y + this.ydir * eyeOffset - this.xdir * eyeOffset;
+    push();
+    float circleposX = this.body.get(0).x;
+    float circlePosY = this.body.get(0).y;
+    translate(circleposX, circlePosY);
+    float eyeX1 = x + this.radius / 2 * this.xdir + this.radius / 2 * this.ydir;
+    float eyeY1 = y + this.radius / 2 * this.ydir - this.radius / 2 * this.xdir; 
+    float eyeX2 = x + this.radius / 2 * this.xdir - this.radius / 2 * this.ydir;
+    float eyeY2 = y + this.radius / 2 * this.ydir + this.radius / 2 * this.xdir;
+    pop();
     ellipse(eyeX1, eyeY1, eyeRadius, eyeRadius);
     ellipse(eyeX2, eyeY2, eyeRadius, eyeRadius);
     popMatrix();
@@ -78,6 +88,17 @@ class Snake {
     }
   }
 
+  void mouseChase() {
+    if(this.start == true) {
+      float dx = mouseX - this.x;
+      float dy = mouseY - this.y;
+      float dist = sqrt(dx * dx + dy * dy);
+      if(dist > 0) {
+        this.x += dx / dist * this.speed;
+        this.y += dy / dist * this.speed;
+      }
+    }
+  }
   void kill() {
     this.start = false;
     this.speed = 0;
